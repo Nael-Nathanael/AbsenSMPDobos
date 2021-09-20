@@ -35,6 +35,8 @@ $routes->get('/', 'Home::index');
 
 $routes->post("/login", "Home::login");
 
+$routes->get("/logout", "Home::logout", ["as" => "auth.logout"]);
+
 $routes->group("admin", function ($routes) {
     $routes->get("", 'Admin::index', ["as" => "admin.panel"]);
     $routes->post("kelas_create", 'Admin::kelas_create', ["as" => "admin.kelas.create"]);

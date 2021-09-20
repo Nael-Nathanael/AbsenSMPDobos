@@ -54,4 +54,10 @@ class Home extends BaseController
         }
         return redirect()->route("absensi.kelas");
     }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to(base_url());
+    }
 }

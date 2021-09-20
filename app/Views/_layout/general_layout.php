@@ -46,9 +46,12 @@
 
     <!-- Main -->
     <div id="main">
-        <header class="mb-3">
+        <header class="mb-3 d-flex justify-content-xl-end justify-content-between">
             <a href="#" class="burger-btn d-block d-xl-none">
                 <i class="bi bi-justify fs-3"></i>
+            </a>
+            <a href="<?= route_to("auth.logout") ?>" class="btn btn-outline-danger">
+                <i class="fa fa-power-off"></i> Log out
             </a>
         </header>
 
