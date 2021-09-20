@@ -25,10 +25,19 @@ $uri3 = $uri[3] ?? '';
             <ul class="menu">
                 <?php if (isAdmin()): ?>
                     <li class="sidebar-item <?= ($uri0 == 'admin' && $uri1 == '') ? 'active' : '' ?> ">
-                        <a href="/mazer" class='sidebar-link'>
+                        <a href="<?= route_to("admin.panel") ?>" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>
                             Daftar Kelas
+                        </span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item <?= ($uri0 == 'admin' && $uri1 == 'tanggal') ? 'active' : '' ?> ">
+                        <a href="<?= route_to("admin.panel.tanggal") ?>" class='sidebar-link'>
+                            <i class="bi bi-calendar"></i>
+                            <span>
+                            Daftar Tanggal Absen
                         </span>
                         </a>
                     </li>

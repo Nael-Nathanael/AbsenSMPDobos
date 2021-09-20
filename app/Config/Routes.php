@@ -46,6 +46,10 @@ $routes->group("admin", function ($routes) {
     $routes->post("kelas/(:num)/siswa_create", 'Admin::siswa_create/$1', ["as" => "admin.kelas.manage.siswa.create"]);
     $routes->post("kelas/siswa_update", 'Admin::siswa_update', ["as" => "admin.kelas.manage.siswa.update"]);
     $routes->post("kelas/siswa_delete", 'Admin::siswa_delete', ["as" => "admin.kelas.manage.siswa.delete"]);
+
+    $routes->get("tanggal", 'Admin::tanggal', ["as" => "admin.panel.tanggal"]);
+    $routes->post("tanggal/generate", 'Admin::tanggal_generate', ["as" => "admin.panel.tanggal.generate"]);
+    $routes->post("tanggal/delete", 'Admin::tanggal_delete', ["as" => "admin.panel.tanggal.delete"]);
 });
 
 /*

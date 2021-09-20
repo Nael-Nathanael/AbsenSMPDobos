@@ -49,5 +49,6 @@ class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
         helper("general_helper");
+        setlocale(LC_TIME, 'id_ID', "INDONESIA", "INDONESIAN");
     }
 }

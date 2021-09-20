@@ -187,4 +187,61 @@ class Admin extends BaseController
         sendSuccessMessage("Siswa telah dihapus");
         return redirect()->back();
     }
+
+    public function tanggal(): string
+    {
+        $TanggalAbsenModel = model("TanggalAbsen");
+        $data['tanggal'] = $TanggalAbsenModel->orderBy("tanggal")->findAll();
+
+        return pageView("admin/tanggal", $data);
+    }
+
+    public function tanggal_generate()
+    {
+        // cek tanggal mulai < tanggal selesai
+        if (strtotime($this->request->getPost("mulai")) > strtotime($this->request->getPost("selesai"))) {
+            sendErrorMessage("Tanggal mulai harus lebih kecil dari tanggal selesai");
+            return redirect()->back()->withInput();
+        }
+
+        $tanggalMulai = date("Y-m-d", strtotime($this->request->getPost("mulai")));
+        $tanggalSelesai = date("Y-m-d", strtotime($this->request->getPost("selesai")));
+
+        $TanggalAbsenModel = model("TanggalAbsen");
+
+        $existingTanggalArray = $TanggalAbsenModel->findColumn("tanggal");
+
+        $CalendarTableModel = model("CalendarTable");
+        $rangedArrayDate = $CalendarTableModel
+            ->select("date as tanggal")
+            ->whereNotIn("DAYOFWEEK(date)", [1, 7])
+            ->whereNotIn("date", $existingTanggalArray)
+            ->where(
+                [
+                    "date >=" => $tanggalMulai,
+                    "date <=" => $tanggalSelesai
+                ]
+            )
+            ->find();
+
+        if (count($rangedArrayDate) == 0) {
+            sendErrorMessage("Seluruh tanggal dalam jangka tersebut sudah pernah dimasukan");
+        } else {
+            $TanggalAbsenModel->insertBatch($rangedArrayDate);
+            sendSuccessMessage("Tanggal telah ditambahkan");
+        }
+        return redirect()->back();
+    }
+
+    public function tanggal_delete()
+    {
+        $id = $this->request->getPost("id");
+
+        $TanggalAbsenModel = model("TanggalAbsen");
+
+        $TanggalAbsenModel->delete($id);
+
+        sendSuccessMessage("Tanggal telah dihapus");
+        return redirect()->back();
+    }
 }
