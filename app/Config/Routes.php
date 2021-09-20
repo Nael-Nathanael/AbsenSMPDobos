@@ -21,7 +21,7 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
+$routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -32,6 +32,21 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+
+$routes->post("/login", "Home::login");
+
+$routes->group("admin", function ($routes) {
+    $routes->get("", 'Admin::index', ["as" => "admin.panel"]);
+    $routes->post("kelas_create", 'Admin::kelas_create', ["as" => "admin.kelas.create"]);
+    $routes->post("kelas_update", 'Admin::kelas_update', ["as" => "admin.kelas.update"]);
+    $routes->post("kelas_delete", 'Admin::kelas_delete', ["as" => "admin.kelas.delete"]);
+    $routes->post("kelas_update_password", 'Admin::kelas_update_password', ["as" => "admin.kelas.update.password"]);
+
+    $routes->get("kelas/(:num)", 'Admin::kelas_manage/$1', ["as" => "admin.kelas.manage.siswa"]);
+    $routes->post("kelas/(:num)/siswa_create", 'Admin::siswa_create/$1', ["as" => "admin.kelas.manage.siswa.create"]);
+    $routes->post("kelas/siswa_update", 'Admin::siswa_update', ["as" => "admin.kelas.manage.siswa.update"]);
+    $routes->post("kelas/siswa_delete", 'Admin::siswa_delete', ["as" => "admin.kelas.manage.siswa.delete"]);
+});
 
 /*
  * --------------------------------------------------------------------
