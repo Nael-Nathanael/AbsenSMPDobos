@@ -41,6 +41,15 @@ $uri3 = $uri[3] ?? '';
                         </span>
                         </a>
                     </li>
+                <?php elseif (isGuru()): ?>
+                    <li class="sidebar-item <?= ($uri0 == 'guru' && $uri1 == '') ? 'active' : '' ?> ">
+                        <a href="<?= route_to("guru.panel") ?>" class='sidebar-link'>
+                            <i class="bi bi-calendar"></i>
+                            <span>
+                            Panel Absen
+                        </span>
+                        </a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </div>

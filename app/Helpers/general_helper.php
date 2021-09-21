@@ -25,3 +25,8 @@ function isAdmin()
 {
     return intval(session("userdata")->isAdmin) == 1;
 }
+
+function isGuru()
+{
+    return intval(session("userdata")->isAdmin) == 0;
+}

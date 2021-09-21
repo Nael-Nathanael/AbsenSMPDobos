@@ -55,20 +55,28 @@
     <div class="overlay"></div>
 
     <div class="card shadow">
-        <form method="POST" action="<?= base_url("/login") ?>" class="card-body">
-            <h2 class="card-title text-center mb-3">Login</h2>
+        <form method="POST" action="<?= route_to("auth.basic.ringkasan_siswa") ?>" class="card-body"
+              id="pilih_kelas_form">
+            <h2 class="card-title text-center mb-3">Cek Absen</h2>
             <div class="form-group mb-2">
-                <label for="username" class="d-none">Nama Pengguna</label>
-                <input type="text" class="form-control" placeholder="Nama Pengguna" name="username"
-                       id="username" required>
+                <label for="id_kelas" class="d-none">Pilih Kelas</label>
+                <select name="id_kelas" id="id_kelas" class="form-select" readonly="" disabled>
+                    <option value="<?= $kelas->id ?>" selected disabled>
+                        <?= $kelas->nama ?> (<?= $kelas->guru ?>)
+                    </option>
+                </select>
             </div>
             <div class="form-group mb-2">
-                <label for="password" class="d-none">Kata Sandi</label>
-                <input type="password" class="form-control" placeholder="Kata Sandi" name="password"
-                       id="password" required>
-            </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary mt-3">Masuk</button>
+                <label for="id_siswa" class="d-none">Pilih Nama Anda</label>
+                <select name="id_siswa" id="id_siswa" class="form-select"
+                        onchange="submitForm()">
+                    <option value="" selected disabled>Pilih Nama Anda</option>
+                    <?php foreach ($siswa as $barisSiswa): ?>
+                        <option value="<?= $barisSiswa->id ?>">
+                            <?= $barisSiswa->nama ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
         </form>
     </div>
@@ -87,5 +95,11 @@
         Swal.fire("Gagal", "<?= session()->getFlashdata("error")?>", "error");
     </script>
 <?php endif; ?>
+
+<script>
+    function submitForm() {
+        document.getElementById('pilih_kelas_form').submit()
+    }
+</script>
 </body>
 </html>

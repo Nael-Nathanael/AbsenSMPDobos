@@ -86,5 +86,16 @@
     </script>
 <?php endif; ?>
 
+<script>
+    async function postData(url = '', data = {}) {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: data
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+</script>
+
+
 </body>
 </html>

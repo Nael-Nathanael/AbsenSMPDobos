@@ -32,13 +32,24 @@ $routes->setAutoRoute(false);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-
-$routes->post("/login", "Home::login");
+$routes->post('/pilih_siswa', 'Home::show_pilihan_siswa', ["as" => "auth.basic.pilih_kelas"]);
 
 $routes->get("/logout", "Home::logout", ["as" => "auth.logout"]);
 
+$routes->group("guru", function ($routes) {
+    $routes->get("login", "Guru::loginPage", ["as" => "auth.guru.login_page"]);
+    $routes->post("login", "Guru::login", ["as" => "auth.guru.login"]);
+
+    $routes->get("", "Guru::index", ["as" => "guru.panel"]);
+    $routes->post("ubah_absen_siswa", "Guru::ubah_absen_siswa", ["as" => "guru.panel.ubah_absen_siswa"]);
+});
+
 $routes->group("admin", function ($routes) {
+    $routes->post("login", "Admin::login", ["as" => "auth.admin.login"]);
+    $routes->get("login", "Admin::loginPage");
+
     $routes->get("", 'Admin::index', ["as" => "admin.panel"]);
+
     $routes->post("kelas_create", 'Admin::kelas_create', ["as" => "admin.kelas.create"]);
     $routes->post("kelas_update", 'Admin::kelas_update', ["as" => "admin.kelas.update"]);
     $routes->post("kelas_delete", 'Admin::kelas_delete', ["as" => "admin.kelas.delete"]);

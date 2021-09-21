@@ -4,6 +4,50 @@ namespace App\Controllers;
 
 class Admin extends BaseController
 {
+    public function loginPage()
+    {
+        return view("_pages/admin/login.php");
+    }
+
+    public function login()
+    {
+        $username = $this->request->getPost("username");
+        $password = $this->request->getPost("password");
+
+        $UsersModel = model("Users");
+        $findUsername = $UsersModel->where(
+            [
+                "username" => $username
+            ]
+        )->countAllResults();
+
+        if ($findUsername == 0) {
+            sendErrorMessage("Nama pengguna tidak ditemukan");
+            return redirect()->back()->withInput();
+        }
+
+        $findAccount = $UsersModel->where(
+            [
+                "username" => $username,
+                "password" => md5($password)
+            ]
+        );
+
+        if ($findAccount->countAllResults() == 0) {
+            sendErrorMessage("Kata sandi salah");
+            return redirect()->back()->withInput();
+        }
+
+        $account = $findAccount->get()->getFirstRow();
+
+        session()->set("userdata", $account);
+
+        if (intval($account->isAdmin) == 1) {
+            return redirect()->route("admin.panel");
+        }
+        return redirect()->route("absensi.kelas");
+    }
+
     public function index(): string
     {
         $KelasModel = model("Kelas");
