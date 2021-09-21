@@ -64,7 +64,12 @@
                             <?php foreach ($kehadiranSiswa as $index => $barisKehadiranSiswa): ?>
                                 <tr>
                                     <td><?= $index + 1 ?></td>
-                                    <td><?= $barisKehadiranSiswa->nama ?></td>
+
+                                    <td>
+                                        <a href="<?= route_to("check.absen.siswa", $barisKehadiranSiswa->id, $tanggal_mulai, $tanggal_selesai) ?>">
+                                            <?= $barisKehadiranSiswa->nama ?>
+                                        </a>
+                                    </td>
                                     <td><?= $barisKehadiranSiswa->hadir ?> hari</td>
                                     <td><?= $barisKehadiranSiswa->tidak_hadir ?> hari</td>
                                     <td><?= $barisKehadiranSiswa->sakit ?> hari</td>

@@ -24,6 +24,9 @@
                             <label for="tanggal" class="d-none">Tanggal</label>
                             <input type="date" name="tanggal" id="tanggal" class="form-control"
                                    value="<?= date("Y-m-d", strtotime($tanggal)) ?>"
+                                   min="<?= date("Y-m-d", strtotime($tanggal_pertama)) ?>"
+                                   max="<?= date("Y-m-d", strtotime($tanggal_terakhir)) ?>"
+
                                    onchange="document.getElementById('tanggalSelectForm').submit()">
                         </form>
                     </div>

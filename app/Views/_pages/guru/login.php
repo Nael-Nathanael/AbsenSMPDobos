@@ -76,6 +76,15 @@
             <div class="text-center">
                 <button type="submit" class="btn btn-primary mt-3">Masuk</button>
             </div>
+
+            <hr>
+            <a href="<?= base_url() ?>" class="text-decoration-none d-block">
+                Siswa Klik Disini
+            </a>
+
+            <a href="<?= route_to("auth.admin.login_page") ?>" class="text-decoration-none d-block">
+                Administrator Klik Disini
+            </a>
         </form>
     </div>
 </main>

@@ -70,8 +70,12 @@
                 </select>
             </div>
             <hr>
-            <a href="<?= route_to("auth.guru.login_page") ?>" class="text-decoration-none">
-                Anda wali kelas? klik disini
+            <a href="<?= route_to("auth.guru.login_page") ?>" class="text-decoration-none d-block">
+                Wali Kelas Klik Disini
+            </a>
+
+            <a href="<?= route_to("auth.admin.login_page") ?>" class="text-decoration-none d-block">
+                Administrator Klik Disini
             </a>
         </form>
     </div>

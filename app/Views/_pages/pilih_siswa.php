@@ -8,6 +8,9 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
     <title>SMP Don Bosco Manado - SIABSEN</title>
 
@@ -55,8 +58,11 @@
     <div class="overlay"></div>
 
     <div class="card shadow">
-        <form method="POST" action="<?= route_to("auth.basic.ringkasan_siswa") ?>" class="card-body"
+        <form method="POST" action="<?= route_to("check.absen.redirector") ?>" class="card-body"
               id="pilih_kelas_form">
+            <a href="<?= base_url() ?>" class="text-decoration-none text-primary">
+                <i class="fa fa-angle-left"></i> Kembali
+            </a>
             <h2 class="card-title text-center mb-3">Cek Absen</h2>
             <div class="form-group mb-2">
                 <label for="id_kelas" class="d-none">Pilih Kelas</label>

@@ -12,6 +12,7 @@ class Guru extends BaseController
     public function index()
     {
         $KelasModel = model("Kelas");
+        $TanggalAbsenModel = model("TanggalAbsen");
 
         // ambil kelas saat ini
         $data["kelas"] = $KelasModel->find(
@@ -25,6 +26,13 @@ class Guru extends BaseController
         $data["kehadiranSiswa"] = $AbsenSiswaModel->getKehadiranForTanggalAndKelas($tanggal, session()->get("userdata"));
 
         $data['tanggal'] = $tanggal;
+
+        $data['tanggal_pertama'] = $TanggalAbsenModel->orderBy("tanggal asc")->get()->getFirstRow()->tanggal;
+
+        $data['tanggal_terakhir'] = $TanggalAbsenModel->orderBy("tanggal desc")->get()->getFirstRow()->tanggal;
+        if (strtotime($data['tanggal_terakhir']) > time()) {
+            $data['tanggal_terakhir'] = date("Y-m-d");
+        }
 
         return pageView("guru/index", $data);
     }

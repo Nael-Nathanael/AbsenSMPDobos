@@ -23,10 +23,10 @@ function hasLogin()
 
 function isAdmin()
 {
-    return intval(session("userdata")->isAdmin) == 1;
+    return hasLogin() && intval(session("userdata")->isAdmin) == 1;
 }
 
 function isGuru()
 {
-    return intval(session("userdata")->isAdmin) == 0;
+    return hasLogin() && intval(session("userdata")->isAdmin) == 0;
 }

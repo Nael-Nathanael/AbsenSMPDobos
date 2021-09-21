@@ -34,6 +34,9 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Home::index');
 $routes->post('/pilih_siswa', 'Home::show_pilihan_siswa', ["as" => "auth.basic.pilih_kelas"]);
 
+$routes->get('/cek_absen/(:segment)/(:segment)/(:segment)', 'Home::check_absen_siswa/$1/$2/$3', ["as" => "check.absen.siswa"]);
+$routes->post('/cek_absen', 'Home::check_absen_siswa_redirect', ["as" => "check.absen.redirector"]);
+
 $routes->get("/logout", "Home::logout", ["as" => "auth.logout"]);
 
 $routes->group("guru", function ($routes) {
@@ -47,8 +50,8 @@ $routes->group("guru", function ($routes) {
 });
 
 $routes->group("admin", function ($routes) {
+    $routes->get("login", "Admin::loginPage", ["as" => "auth.admin.login_page"]);
     $routes->post("login", "Admin::login", ["as" => "auth.admin.login"]);
-    $routes->get("login", "Admin::loginPage");
 
     $routes->get("", 'Admin::index', ["as" => "admin.panel"]);
 
