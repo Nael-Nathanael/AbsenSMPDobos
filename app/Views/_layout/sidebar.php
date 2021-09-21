@@ -50,6 +50,15 @@ $uri3 = $uri[3] ?? '';
                         </span>
                         </a>
                     </li>
+
+                    <li class="sidebar-item <?= ($uri0 == 'guru' && $uri1 == 'ringkasan') ? 'active' : '' ?> ">
+                        <a href="<?= route_to("guru.panel.ringkasan") ?>" class='sidebar-link'>
+                            <i class="bi bi-files"></i>
+                            <span>
+                            Ringkasan Absen
+                        </span>
+                        </a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </div>

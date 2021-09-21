@@ -77,4 +77,55 @@ class AbsenSiswa extends Model
 
         return $kehadiran->getResult();
     }
+
+    function getRingkasanKehadiranForTanggalRangeAndKelas($tanggal_mulai, $tanggal_selesai, $kelas)
+    {
+        $TanggalAbsenModel = model("TanggalAbsen");
+
+        $id_tanggal_mulai = $TanggalAbsenModel->where(["tanggal" => $tanggal_mulai])->get()->getFirstRow()->id;
+        $id_tanggal_selesai = $TanggalAbsenModel->where(["tanggal" => $tanggal_selesai])->get()->getFirstRow()->id;
+
+        // cari jumlah tanggal
+        $jumlahTanggal = $TanggalAbsenModel->where(
+            [
+                "tanggal >=" => $tanggal_mulai,
+                "tanggal <=" => $tanggal_selesai
+            ]
+        )->get()->getNumRows();
+
+        // tanggal tidak hadir = total tanggal - hadir - sakit - izin - terlambat
+        $result = $this->db->query("SELECT siswa.id,
+       siswa.nama,
+       IFNULL(hadir.total, 0)     as hadir,
+       $jumlahTanggal - IFNULL(hadir.total, 0) - IFNULL(sakit.total, 0) - IFNULL(izin.total, 0) - IFNULL(terlambat.total, 0)       as tidak_hadir,
+       IFNULL(sakit.total, 0)     as sakit,
+       IFNULL(izin.total, 0)      as izin,
+       IFNULL(terlambat.total, 0) as terlambat
+FROM siswa
+         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
+                    FROM absen_siswa
+                    WHERE status_kehadiran = 'h' AND id_tanggal_absen >= $id_tanggal_mulai AND id_tanggal_absen <= $id_tanggal_selesai AND absen_siswa.deleted_at IS NULL
+                    GROUP BY id_siswa) as hadir on hadir.id_siswa = siswa.id
+
+         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
+                    FROM absen_siswa
+                    WHERE status_kehadiran = 's' AND id_tanggal_absen >= $id_tanggal_mulai AND id_tanggal_absen <= $id_tanggal_selesai AND absen_siswa.deleted_at IS NULL
+                    GROUP BY id_siswa) as sakit on sakit.id_siswa = siswa.id
+
+
+         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
+                    FROM absen_siswa
+                    WHERE status_kehadiran = 'i' AND id_tanggal_absen >= $id_tanggal_mulai AND id_tanggal_absen <= $id_tanggal_selesai AND absen_siswa.deleted_at IS NULL
+                    GROUP BY id_siswa) as izin on izin.id_siswa = siswa.id
+
+         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
+                    FROM absen_siswa
+                    WHERE status_kehadiran = 't' AND id_tanggal_absen >= $id_tanggal_mulai AND id_tanggal_absen <= $id_tanggal_selesai AND absen_siswa.deleted_at IS NULL
+                    GROUP BY id_siswa) as terlambat on terlambat.id_siswa = siswa.id
+        WHERE siswa.id_kelas = $kelas->id
+AND siswa.deleted_at IS NULL
+");
+
+        return $result->getResult();
+    }
 }

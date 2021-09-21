@@ -11,8 +11,14 @@
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-header d-flex justify-content-sm-between flex-wrap align-items-center">
-                    <div class="card-title">Absensi Siswa
-                        <?= strftime("%A, %d %B %Y", strtotime($tanggal)) ?></div>
+                    <div class="card-title">Absensi Siswa -
+                        <span class="fw-bold">
+                        <?= strftime("%A, %d %B %Y", strtotime($tanggal)) ?>
+                            <?php if (date("Y-m-d") == date("Y-m-d", strtotime($tanggal))): ?>
+                                (Hari ini)
+                            <?php endif; ?>
+                        </span>
+                    </div>
                     <div>
                         <form id="tanggalSelectForm">
                             <label for="tanggal" class="d-none">Tanggal</label>

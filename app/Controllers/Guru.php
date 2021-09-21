@@ -84,4 +84,47 @@ class Guru extends BaseController
             200
         );
     }
+
+    public function ringkasan()
+    {
+        $KelasModel = model("Kelas");
+        $TanggalAbsenModel = model("TanggalAbsen");
+
+        // ambil kelas saat ini
+        $data["kelas"] = $KelasModel->find(
+            session()->get("userdata")->id
+        );
+
+        // ambil tanggal pertama dan tanggal terakhir absen
+        $tanggal_pertama = $TanggalAbsenModel->orderBy("tanggal asc")->get()->getFirstRow()->tanggal;
+
+        $tanggal_terakhir = $TanggalAbsenModel->orderBy("tanggal desc")->get()->getFirstRow()->tanggal;
+        if (strtotime($tanggal_terakhir) > time()) {
+            $tanggal_terakhir = date("Y-m-d");
+        }
+
+        $tanggal_mulai = $this->request->getGet("tanggal_mulai");
+        $tanggal_selesai = $this->request->getGet("tanggal_selesai");
+
+        if (!$tanggal_mulai || $tanggal_mulai == "" || strtotime($tanggal_mulai) < strtotime($tanggal_pertama)) {
+            $tanggal_mulai = $tanggal_pertama;
+        }
+        if (!$tanggal_selesai || $tanggal_selesai == "") {
+            $tanggal_selesai = $tanggal_terakhir;
+        }
+
+        if (strtotime($tanggal_mulai) > strtotime($tanggal_selesai)) {
+            sendErrorMessage("Tanggal mulai harus lebih dulu dari tanggal selesai");
+        }
+
+        $AbsenSiswaModel = model("AbsenSiswa");
+        $data["kehadiranSiswa"] = $AbsenSiswaModel->getRingkasanKehadiranForTanggalRangeAndKelas($tanggal_mulai, $tanggal_selesai, session()->get("userdata"));
+
+        $data['tanggal_mulai'] = $tanggal_mulai;
+        $data['tanggal_selesai'] = $tanggal_selesai;
+        $data['tanggal_pertama'] = $tanggal_pertama;
+        $data['tanggal_terakhir'] = $tanggal_terakhir;
+
+        return pageView("guru/ringkasan", $data);
+    }
 }

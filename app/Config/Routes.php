@@ -42,6 +42,8 @@ $routes->group("guru", function ($routes) {
 
     $routes->get("", "Guru::index", ["as" => "guru.panel"]);
     $routes->post("ubah_absen_siswa", "Guru::ubah_absen_siswa", ["as" => "guru.panel.ubah_absen_siswa"]);
+
+    $routes->get("ringkasan", "Guru::ringkasan", ["as" => "guru.panel.ringkasan"]);
 });
 
 $routes->group("admin", function ($routes) {
