@@ -259,13 +259,14 @@ class Admin extends BaseController
         $rangedArrayDate = $CalendarTableModel
             ->select("date as tanggal")
             ->whereNotIn("DAYOFWEEK(date)", [1, 7])
-            ->whereNotIn("date", $existingTanggalArray)
-            ->where(
-                [
-                    "date >=" => $tanggalMulai,
-                    "date <=" => $tanggalSelesai
-                ]
-            )
+            ->where("date >=", $tanggalMulai)
+            ->where("date <=", $tanggalSelesai);
+
+        if ($existingTanggalArray) {
+            $rangedArrayDate = $rangedArrayDate->whereNotIn("date", $existingTanggalArray);
+        }
+
+        $rangedArrayDate = $rangedArrayDate
             ->find();
 
         if (count($rangedArrayDate) == 0) {
