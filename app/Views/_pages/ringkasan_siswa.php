@@ -17,87 +17,102 @@
 <body class="bg-light">
 
 <div class="container-fluid mt-2">
-    <a class="card card-body shadow-sm flex-row align-items-center text-decoration-none text-primary lead"
-       href="<?= isGuru() ? $_SERVER['HTTP_REFERER'] : base_url() ?>">
-        <i class="fa fa-angle-left me-2"></i> Kembali
-    </a>
+    <div class="card shadow">
+        <div class="card-body d-flex align-items-center justify-content-between flex-wrap">
+            <a class="text-decoration-none text-primary lead"
+               href="<?= isGuru() ? $_SERVER['HTTP_REFERER'] : base_url() ?>">
+                <i class="fa fa-angle-left me-2"></i> Kembali
+            </a>
+        </div>
+    </div>
 </div>
 
-<div class="container my-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+<div class="container-fluid mt-2">
+    <div class="card shadow">
+        <div class="card-header bg-transparent">
             <div class="card-title mb-0 h4">
                 Ringkasan Absensi Siswa
             </div>
-            <div class="h5 mb-0">
-                <span class="fw-bold">
-                        <?= strftime("%A, %d %B %Y", strtotime($tanggal_mulai)) ?>
-                </span>
-                sampai
-                <span class="fw-bold">
-                        <?= strftime("%A, %d %B %Y", strtotime($tanggal_selesai)) ?>
-                </span>
-            </div>
+            <?= strftime("%A, %d %B %Y", strtotime($tanggal_mulai)) ?>
+            -
+            <?= strftime("%A, %d %B %Y", strtotime($tanggal_selesai)) ?>
         </div>
         <div class="card-body">
-            <div class="d-flex justify-content-between">
-                <table class="lead">
-                    <tr>
-                        <td>Siswa</td>
-                        <td class="ps-4 pe-2">:</td>
-                        <td class="fw-bold"><?= $siswa->nama ?></td>
-                    </tr>
-                    <tr>
-                        <td>Kelas</td>
-                        <td class="ps-4 pe-2">:</td>
-                        <td class="fw-bold"><?= $kelas->nama ?></td>
-                    </tr>
-                    <tr>
-                        <td>Guru Wali Kelas</td>
-                        <td class="ps-4 pe-2">:</td>
-                        <td class="fw-bold"><?= $kelas->guru ?></td>
-                    </tr>
-                </table>
-                <div>
-                    <p class="lead fw-bold text-center mb-2">
-                        Ringkasan
-                    </p>
-                    <div class="d-flex">
-                        <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="d-flex align-items-center h-100">
+                        <table class="lead d-lg-table d-none">
+                            <tr>
+                                <td>Siswa</td>
+                                <td class="ps-4 pe-2">:</td>
+                                <td class="fw-bold"><?= $siswa->nama ?></td>
+                            </tr>
+                            <tr>
+                                <td>Kelas</td>
+                                <td class="ps-4 pe-2">:</td>
+                                <td class="fw-bold"><?= $kelas->nama ?></td>
+                            </tr>
+                            <tr>
+                                <td>Guru Wali Kelas</td>
+                                <td class="ps-4 pe-2">:</td>
+                                <td class="fw-bold"><?= $kelas->guru ?></td>
+                            </tr>
+                        </table>
+                        <div class="d-lg-none d-block">
+                            <p class="mb-0" style="line-height: 1.1">Siswa :</p>
+                            <p class="lead fw-bold">
+                                <?= $siswa->nama ?>
+                            </p>
+
+                            <p class="mb-0" style="line-height: 1.1">Kelas :</p>
+                            <p class="lead fw-bold">
+                                <?= $kelas->nama ?>
+                            </p>
+                            <p class="mb-0" style="line-height: 1.1">Guru :</p>
+                            <p class="lead fw-bold">
+                                <?= $kelas->guru ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="d-flex justify-content-lg-end align-items-center h-100 flex-wrap justify-content-center">
+                        <div class="m-1 shadow rounded p-1 d-flex flex-column justify-content-end align-items-center bg-primary text-white"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-primary mb-0 h3" id="hadir">
+                            <p class="fw-bold mb-0 h3" id="hadir">
 
                             </p>
                             <small>Hadir</small>
                         </div>
 
-                        <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
+                        <div class="m-1 shadow text-white bg-danger rounded p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-danger mb-0 h3" id="tidak_hadir">
+                            <p class="fw-bold mb-0 h3" id="tidak_hadir">
 
                             </p>
                             <small>Alpa</small>
                         </div>
 
-                        <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
+                        <div class="m-1 shadow text-white bg-success rounded p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-success mb-0 h3" id="sakit">
+                            <p class="fw-bold mb-0 h3" id="sakit">
 
                             </p>
                             <small>Sakit</small>
                         </div>
 
-                        <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
+                        <div class="m-1 shadow text-white bg-info rounded p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-info mb-0 h3" id="izin">
+                            <p class="fw-bold mb-0 h3" id="izin">
 
                             </p>
                             <small>Izin</small>
                         </div>
 
-                        <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
+                        <div class="m-1 shadow text-white bg-dark rounded p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-dark mb-0 h3" id="terlambat">
+                            <p class="fw-bold mb-0 h3" id="terlambat">
 
                             </p>
                             <small>Terlambat</small>
@@ -106,14 +121,18 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer bg-transparent">
-            <div class="table-responsive">
+    </div>
+</div>
 
+<div class="container-fluid my-2">
+    <div class="card shadow">
+        <div class="card-body bg-transparent">
+            <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                     <tr>
                         <th>Tanggal</th>
-                        <th>Status Kehadiran</th>
+                        <th class="w-100">Status Kehadiran (Alpa, Sakit, Izin, dan Terlambat)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -125,8 +144,8 @@
                     $terlambat = 0;
                     ?>
                     <?php foreach ($detailKehadiranSiswa as $detailRow): ?>
-                        <tr>
-                            <td><?= strftime("%A, %d %B %Y", strtotime($detailRow->tanggal)) ?></td>
+                        <tr class="<?= $detailRow->status_kehadiran == "h" ? "d-none" : "" ?>">
+                            <td nowrap><?= strftime("%d %b %Y", strtotime($detailRow->tanggal)) ?></td>
                             <td>
                                 <p class="mb-0 lead">
                                     <?php switch ($detailRow->status_kehadiran): ?>
