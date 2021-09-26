@@ -6,7 +6,7 @@
         <i class="fa fa-angle-left"></i> Kembali ke daftar kelas
     </a>
     <h3>Kelas <?= $kelas->nama ?></h3>
-    <h5>Wali Kelas: <?= $kelas->guru ?></h5>
+    <h5>Guru: <?= $kelas->guru ?></h5>
 </div>
 <div class="page-content">
     <section class="row">

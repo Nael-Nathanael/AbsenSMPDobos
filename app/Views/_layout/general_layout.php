@@ -51,7 +51,7 @@
                 <i class="bi bi-justify fs-3"></i>
             </a>
             <a href="<?= route_to("auth.logout") ?>" class="btn btn-outline-danger">
-                <i class="fa fa-power-off"></i> Log out
+                <i class="fa fa-power-off"></i> Keluar
             </a>
         </header>
 

@@ -71,7 +71,7 @@
             </div>
             <hr>
             <a href="<?= route_to("auth.guru.login_page") ?>" class="text-decoration-none d-block">
-                Wali Kelas Klik Disini
+                Guru Klik Disini
             </a>
 
             <a href="<?= route_to("auth.admin.login_page") ?>" class="text-decoration-none d-block">

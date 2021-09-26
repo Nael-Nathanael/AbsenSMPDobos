@@ -22,7 +22,7 @@
                             <tr>
                                 <th style="width: 1px">No</th>
                                 <th>Kelas</th>
-                                <th>Wali Kelas</th>
+                                <th>Guru</th>
                                 <th>Aksi</th>
                             </tr>
                             </thead>
@@ -35,26 +35,26 @@
                                     <td>
                                         <div class="d-flex">
 
-                                            <a class="btn btn-icon btn-primary me-2"
+                                            <a class="btn btn-icon btn-sm btn-primary me-2"
                                                href="<?= route_to("admin.kelas.manage.siswa", $barisKelas->id) ?>">
-                                                <i class="fa fa-user-graduate"></i> Daftar Siswa
+                                                <i class="fa fa-user-graduate"></i> Siswa
                                             </a>
 
-                                            <button class="btn btn-icon btn-warning me-2" type="button"
+                                            <button class="btn btn-icon btn-sm btn-warning me-2" type="button"
                                                     onclick="ubahKelas(<?= $barisKelas->id ?>, '<?= $barisKelas->nama ?>', '<?= $barisKelas->guru ?>')">
-                                                <i class="fa fa-pen"></i> Ubah Kelas
+                                                <i class="fa fa-pen"></i> Ubah
                                             </button>
 
                                             <form action="<?= route_to("admin.kelas.delete") ?>" method="post"
                                                   id="formDelete<?= $barisKelas->id ?>">
                                                 <input type="hidden" name="id" value="<?= $barisKelas->id ?>">
-                                                <button class="btn btn-icon btn-danger me-2" type="button"
+                                                <button class="btn btn-icon btn-sm btn-danger me-2" type="button"
                                                         onclick="confirmDeleteKelas(<?= $barisKelas->id ?>)">
-                                                    <i class="fa fa-trash"></i> Hapus Kelas
+                                                    <i class="fa fa-trash"></i> Hapus
                                                 </button>
                                             </form>
 
-                                            <button class="btn btn-icon btn-info me-2" type="button"
+                                            <button class="btn btn-icon btn-sm btn-info me-2" type="button"
                                                     onclick="ubahPassword(<?= $barisKelas->id ?>)">
                                                 <i class="fa fa-cogs"></i> Ubah Kata Sandi
                                             </button>
