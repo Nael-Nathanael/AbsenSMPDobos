@@ -87,11 +87,3 @@
 </div>
 
 <?= $this->endSection() ?>
-
-<?= $this->section("styles") ?>
-<style>
-    .absenButton {
-        min-width: 150px;
-    }
-</style>
-<?= $this->endSection(); ?>

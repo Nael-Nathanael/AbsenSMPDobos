@@ -92,7 +92,7 @@ class AbsenSiswa extends Model
         $result = $this->db->query("SELECT siswa.id,
        siswa.nama,
        IFNULL(hadir.total, 0)     as hadir,
-       IFNULL(tidak_hadir.total, 0)     as tidak_hadir,
+       IFNULL(tidak_hadir.total, 0) + ($jumlahTanggal - IFNULL(hadir.total, 0) - IFNULL(sakit.total, 0) - IFNULL(izin.total, 0) - IFNULL(terlambat.total, 0) - IFNULL(tidak_hadir.total, 0)) as tidak_hadir,
        IFNULL(sakit.total, 0)     as sakit,
        IFNULL(izin.total, 0)      as izin,
        IFNULL(terlambat.total, 0) as terlambat
@@ -133,65 +133,20 @@ AND siswa.deleted_at IS NULL
         return $result->getResult();
     }
 
-    function getRingkasanKehadiranForTanggalRangeAndSiswa($tanggal_mulai, $tanggal_selesai, $id_siswa)
-    {
-        $TanggalAbsenModel = model("TanggalAbsen");
-
-        $result = $this->db->query("SELECT siswa.nama,
-       IFNULL(hadir.total, 0)     as hadir,
-       IFNULL(tidak_hadir.total, 0)     as tidak_hadir,
-       IFNULL(sakit.total, 0)     as sakit,
-       IFNULL(izin.total, 0)      as izin,
-       IFNULL(terlambat.total, 0) as terlambat
-FROM (SELECT * FROM siswa WHERE id = $id_siswa) siswa
-         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
-                    FROM absen_siswa
-                    LEFT JOIN tanggal_absen ta on absen_siswa.id_tanggal_absen = ta.id
-                    WHERE status_kehadiran = 'h' AND ta.tanggal >= '$tanggal_mulai' AND ta.tanggal <= '$tanggal_selesai' AND absen_siswa.deleted_at IS NULL AND ta.deleted_at is null AND absen_siswa.id_siswa = $id_siswa
-                    GROUP BY id_siswa) as hadir on hadir.id_siswa = siswa.id
-
-         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
-                    FROM absen_siswa
-                    LEFT JOIN tanggal_absen ta on absen_siswa.id_tanggal_absen = ta.id
-                    WHERE status_kehadiran = 's' AND ta.tanggal >= '$tanggal_mulai' AND ta.tanggal <= '$tanggal_selesai' AND absen_siswa.deleted_at IS NULL AND ta.deleted_at is null AND absen_siswa.id_siswa = $id_siswa
-                    GROUP BY id_siswa) as sakit on sakit.id_siswa = siswa.id
-
-         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
-                    FROM absen_siswa
-                    LEFT JOIN tanggal_absen ta on absen_siswa.id_tanggal_absen = ta.id
-                    WHERE status_kehadiran = 'a' AND ta.tanggal >= '$tanggal_mulai' AND ta.tanggal <= '$tanggal_selesai' AND absen_siswa.deleted_at IS NULL AND ta.deleted_at is null AND absen_siswa.id_siswa = $id_siswa
-                    GROUP BY id_siswa) as tidak_hadir on tidak_hadir.id_siswa = siswa.id
-
-         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
-                    FROM absen_siswa
-                    LEFT JOIN tanggal_absen ta on absen_siswa.id_tanggal_absen = ta.id
-                    WHERE status_kehadiran = 'i' AND ta.tanggal >= '$tanggal_mulai' AND ta.tanggal <= '$tanggal_selesai' AND absen_siswa.deleted_at IS NULL AND ta.deleted_at is null AND absen_siswa.id_siswa = $id_siswa
-                    GROUP BY id_siswa) as izin on izin.id_siswa = siswa.id
-
-         LEFT JOIN (SELECT id_siswa, count(id_siswa) as total
-                    FROM absen_siswa
-                    LEFT JOIN tanggal_absen ta on absen_siswa.id_tanggal_absen = ta.id
-                    WHERE status_kehadiran = 't' AND ta.tanggal >= '$tanggal_mulai' AND ta.tanggal <= '$tanggal_selesai' AND absen_siswa.deleted_at IS NULL AND ta.deleted_at is null AND absen_siswa.id_siswa = $id_siswa
-                    GROUP BY id_siswa) as terlambat on terlambat.id_siswa = siswa.id
-");
-
-        return $result->getFirstRow();
-    }
-
     function getDetailKehadiranForTanggalRangeAndSiswa($tanggal_mulai, $tanggal_selesai, $id_siswa)
     {
-        $TanggalAbsenModel = model("TanggalAbsen");
+        $result = $this->db->query(
+            "
+SELECT `absen_siswa`.`status_kehadiran`, `tanggal_absen`.`tanggal`
+FROM `tanggal_absen`
+LEFT JOIN (SELECT * FROM absen_siswa WHERE id_siswa = $id_siswa) absen_siswa ON `absen_siswa`.`id_tanggal_absen` = `tanggal_absen`.`id`
+WHERE `tanggal_absen`.`tanggal` >= '$tanggal_mulai'
+AND `tanggal_absen`.`tanggal` <= '$tanggal_selesai'
+AND `absen_siswa`.`deleted_at` IS NULL
+AND `tanggal_absen`.`deleted_at` IS NULL
+ORDER BY `tanggal_absen`.`tanggal` DESC"
+        );
 
-        $result = $TanggalAbsenModel
-            ->select("$this->table.status_kehadiran, $TanggalAbsenModel->table.tanggal")
-            ->join("$this->table", "$this->table.id_tanggal_absen = $TanggalAbsenModel->table.$TanggalAbsenModel->primaryKey", "left")
-            ->where("$TanggalAbsenModel->table.tanggal >=", $tanggal_mulai)
-            ->where("$TanggalAbsenModel->table.tanggal <=", $tanggal_selesai)
-            ->where("$this->table.id_siswa", $id_siswa)
-            ->where("$this->table.deleted_at IS NULL")
-            ->where("$TanggalAbsenModel->table.deleted_at IS NULL")
-            ->orderBy("$TanggalAbsenModel->table.tanggal DESC");
-
-        return $result->get()->getResult();
+        return $result->getResult();
     }
 }

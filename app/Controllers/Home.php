@@ -58,7 +58,6 @@ class Home extends BaseController
         }
 
         $AbsenSiswaModel = model("AbsenSiswa");
-        $data["kehadiranSiswa"] = $AbsenSiswaModel->getRingkasanKehadiranForTanggalRangeAndSiswa($tanggal_mulai, $tanggal_selesai, $id_siswa);
         $data["detailKehadiranSiswa"] = $AbsenSiswaModel->getDetailKehadiranForTanggalRangeAndSiswa($tanggal_mulai, $tanggal_selesai, $id_siswa);
 
         $data['tanggal_mulai'] = $tanggal_mulai;

@@ -45,7 +45,7 @@
                     <tr>
                         <td>Siswa</td>
                         <td class="ps-4 pe-2">:</td>
-                        <td class="fw-bold"><?= $kehadiranSiswa->nama ?></td>
+                        <td class="fw-bold"><?= $siswa->nama ?></td>
                     </tr>
                     <tr>
                         <td>Kelas</td>
@@ -65,31 +65,41 @@
                     <div class="d-flex">
                         <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-primary mb-0 h3"><?= $kehadiranSiswa->hadir ?></p>
+                            <p class="fw-bold text-primary mb-0 h3" id="hadir">
+
+                            </p>
                             <small>Hadir</small>
                         </div>
 
                         <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-danger mb-0 h3"><?= $kehadiranSiswa->tidak_hadir ?></p>
+                            <p class="fw-bold text-danger mb-0 h3" id="tidak_hadir">
+
+                            </p>
                             <small>Alpa</small>
                         </div>
 
                         <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-success mb-0 h3"><?= $kehadiranSiswa->sakit ?></p>
+                            <p class="fw-bold text-success mb-0 h3" id="sakit">
+
+                            </p>
                             <small>Sakit</small>
                         </div>
 
                         <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-info mb-0 h3"><?= $kehadiranSiswa->izin ?></p>
+                            <p class="fw-bold text-info mb-0 h3" id="izin">
+
+                            </p>
                             <small>Izin</small>
                         </div>
 
                         <div class="border p-1 d-flex flex-column justify-content-end align-items-center"
                              style="width: 75px; height: 75px">
-                            <p class="fw-bold text-dark mb-0 h3"><?= $kehadiranSiswa->terlambat ?></p>
+                            <p class="fw-bold text-dark mb-0 h3" id="terlambat">
+
+                            </p>
                             <small>Terlambat</small>
                         </div>
                     </div>
@@ -107,6 +117,13 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <?php
+                    $hadir = 0;
+                    $sakit = 0;
+                    $izin = 0;
+                    $alpa = 0;
+                    $terlambat = 0;
+                    ?>
                     <?php foreach ($detailKehadiranSiswa as $detailRow): ?>
                         <tr>
                             <td><?= strftime("%A, %d %B %Y", strtotime($detailRow->tanggal)) ?></td>
@@ -114,35 +131,40 @@
                                 <p class="mb-0 lead">
                                     <?php switch ($detailRow->status_kehadiran): ?>
 <?php case "h": ?>
+                                            <?php $hadir++; ?>
                                             <span class="lead badge bg-primary">
                                                 <i class="fa fa-check"></i> Hadir
                                             </span>
                                             <?php break; ?>
 
                                         <?php case "s": ?>
+                                            <?php $sakit++; ?>
                                             <span class="lead badge bg-success">
                                                 <i class="fa fa-hospital"></i> Sakit
                                             </span>
                                             <?php break; ?>
 
                                         <?php case "i": ?>
+                                            <?php $ijin++; ?>
                                             <span class="lead badge bg-info">
                                                 <i class="fa fa-envelope"></i> Izin
                                             </span>
                                             <?php break; ?>
 
                                         <?php case "t": ?>
+
+                                            <?php $terlambat++; ?>
                                             <span class="lead badge bg-dark">
                                                 <i class="fa fa-clock"></i> Terlambat
                                             </span>
                                             <?php break; ?>
 
                                         <?php default: ?>
+                                            <?php $alpa++; ?>
                                             <span class="lead badge bg-danger">
                                                 <i class="fa fa-times"></i> Tidak Hadir
-        </span>
+                                            </span>
                                             <?php break; ?>
-
                                         <?php endswitch; ?>
                                 </p>
                             </td>
@@ -155,5 +177,12 @@
     </div>
 </div>
 
+<script>
+    document.getElementById("hadir").innerHTML = '<?= $hadir?>';
+    document.getElementById("tidak_hadir").innerHTML = '<?= $alpa ?>';
+    document.getElementById("sakit").innerHTML = '<?= $sakit?>';
+    document.getElementById("izin").innerHTML = '<?= $izin?>';
+    document.getElementById("terlambat").innerHTML = '<?= $terlambat?>';
+</script>
 </body>
 </html>
